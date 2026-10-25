@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Peter's Hangman is a small vocabulary word game you can add to your home screen."
+    />
+    <meta name="theme-color" content="#f6f0e4" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Hangman" />
+    <title>Peter's Hangman</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="masthead">
+        <img class="logo" src="icons/favicon.svg" alt="" width="48" height="48" />
+        <div>
+          <h1>Peter's Hangman</h1>
+          <p class="tagline">Guess the word</p>
+        </div>
+      </header>
+
+      <section class="stage" id="stage" aria-label="Hangman">
+        <svg class="figure" viewBox="0 0 160 180" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 168 H92 M40 168 V18 H118 M118 18 V40" />
+            <circle class="part" data-part="1" cx="118" cy="58" r="16" />
+            <path class="part" data-part="2" d="M118 74 V116" />
+            <path class="part" data-part="3" d="M118 90 L92 108" />
+            <path class="part" data-part="4" d="M118 90 L144 108" />
+            <path class="part" data-part="5" d="M118 116 L96 148" />
+            <path class="part" data-part="6" d="M118 116 L140 148" />
+          </g>
+        </svg>
+        <p id="wrong-count" class="wrong-count">Wrong guesses: 0 / 6</p>
+      </section>
+
+      <p id="word" class="word" aria-live="polite"></p>
+      <p id="message" class="message" role="status">Guess a letter.</p>
+      <p id="guessed" class="guessed">Guessed: none yet</p>
+
+      <div id="keyboard" class="keyboard" role="group" aria-label="Letter keys"></div>
+
+      <button id="next-round" class="next-round" type="button">New round</button>
+
+      <footer class="footer">Peter's Hangman (v1.0)</footer>
+    </main>
+    <noscript>
+      <p class="noscript">Peter's Hangman needs JavaScript. It still runs entirely in your browser.</p>
+    </noscript>
+    <script src="game.js"></script>
+  </body>
+</html>
