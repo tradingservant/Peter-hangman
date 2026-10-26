@@ -1,12 +1,16 @@
 /* Offline shell for Peter's Hangman.
-   Bump CACHE when shipping a new version (keep it in step with the footer). */
-const CACHE = "peters-hangman-v1.1";
+   Bump CACHE and the ?v= links in index.html together with the footer.
+   Navigations, index.html, game.js, and styles.css use the network when
+   online so a stale cache cannot keep an old script after a deploy. */
+const CACHE = "peters-hangman-v1.2";
 
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
+  "./styles.css?v=1.2",
   "./game.js",
+  "./game.js?v=1.2",
   "./manifest.webmanifest",
   "./icons/favicon.svg",
   "./icons/icon-192.png",
@@ -14,6 +18,50 @@ const ASSETS = [
   "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png",
 ];
+
+function isCritical(request) {
+  if (request.mode === "navigate") return true;
+  var path = new URL(request.url).pathname;
+  return (
+    path.endsWith("/index.html") ||
+    path.endsWith("/game.js") ||
+    path.endsWith("/styles.css")
+  );
+}
+
+async function cached(cache, request) {
+  return (
+    (await cache.match(request)) ||
+    (await cache.match(request, { ignoreSearch: true }))
+  );
+}
+
+function offlineShell() {
+  return new Response("Offline", {
+    status: 503,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+async function networkFirst(cache, request) {
+  try {
+    var fresh = await fetch(request);
+    if (fresh && fresh.ok && fresh.type === "basic" && !fresh.redirected) {
+      await cache.put(request, fresh.clone());
+    }
+    if (fresh) return fresh;
+  } catch (err) {
+    /* Offline or a failed connection: use the cached shell. */
+  }
+
+  var saved = await cached(cache, request);
+  if (saved) return saved;
+  if (request.mode === "navigate") {
+    var shell = (await cache.match("./index.html")) || (await cache.match("./"));
+    if (shell) return shell;
+  }
+  return offlineShell();
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -36,37 +84,25 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  const request = event.request;
+  var request = event.request;
   if (request.method !== "GET") return;
 
   event.respondWith(
     (async () => {
-      const cache = await caches.open(CACHE);
-      const cached = await cache.match(request);
-      const network = fetch(request)
-        .then((response) => {
-          if (response && response.ok && response.type === "basic") {
-            cache.put(request, response.clone());
-          }
-          return response;
-        })
-        .catch(() => null);
+      var cache = await caches.open(CACHE);
+      if (isCritical(request)) return networkFirst(cache, request);
 
-      if (cached) return cached;
-
-      const fresh = await network;
-      if (fresh) return fresh;
-
-      if (request.mode === "navigate") {
-        const shell =
-          (await cache.match("./index.html")) || (await cache.match("./"));
-        if (shell) return shell;
+      var saved = await cache.match(request);
+      if (saved) return saved;
+      try {
+        var fresh = await fetch(request);
+        if (fresh && fresh.ok && fresh.type === "basic" && !fresh.redirected) {
+          await cache.put(request, fresh.clone());
+        }
+        return fresh;
+      } catch (err) {
+        return offlineShell();
       }
-
-      return new Response("Offline", {
-        status: 503,
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
     })()
   );
 });
