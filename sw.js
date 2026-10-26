@@ -1,6 +1,6 @@
 /* Offline shell for Peter's Hangman.
    Bump CACHE when shipping a new version (keep it in step with the footer). */
-const CACHE = "peters-hangman-v1.0";
+const CACHE = "peters-hangman-v1.1";
 
 const ASSETS = [
   "./",

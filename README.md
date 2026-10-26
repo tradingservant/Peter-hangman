@@ -1,8 +1,8 @@
 # Peter's Hangman
 
-A small static Hangman vocabulary game. Each round hides one of three words — **kill**, **knock**, or **down** — and you guess letters before the drawing is finished. It is a phone-friendly page with no server, no account, and no API keys. After the first visit it can open offline, and it can be added to an iPhone home screen.
+A small static Hangman vocabulary game. Each round hides one of two entries — **kill** or **knock down** — and you guess letters before the drawing is finished. **knock down** keeps the space between the two words. A Chinese hint sits beside the drawing: 殺害 for kill, and 擊倒 for knock down. It is a phone-friendly page with no server, no account, and no API keys. After the first visit it can open offline, and it can be added to an iPhone home screen.
 
-The footer reads **Peter's Hangman (v1.0)**.
+The footer reads **Peter's Hangman (v1.1)**.
 
 ## Play locally
 

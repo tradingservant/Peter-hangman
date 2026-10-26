@@ -105,6 +105,33 @@ h1 {
   color: var(--ink);
 }
 
+.stage-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+.hint {
+  margin: 0;
+  min-width: 5.4rem;
+  min-height: 4.6rem;
+  padding: 0.45rem 0.75rem;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 3px solid var(--good);
+  border-radius: 12px;
+  color: var(--ink);
+  font-family: "PingFang TC", "PingFang HK", "Noto Sans CJK TC", "Noto Sans TC",
+    "Microsoft JhengHei", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+}
+
 .stage.is-lost .figure {
   color: var(--bad);
 }
@@ -127,9 +154,21 @@ h1 {
 .word {
   display: flex;
   justify-content: center;
-  gap: 0.45rem;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.7rem;
   min-height: 3.4rem;
   margin: 0;
+}
+
+.word-group {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.word-gap {
+  width: 0.35rem;
+  flex: 0 0 auto;
 }
 
 .tile {
@@ -151,6 +190,17 @@ h1 {
 .tile.missed {
   color: var(--bad);
   border-bottom-color: var(--bad);
+}
+
+.word.phrase .tile {
+  width: 1.7rem;
+  height: 2.55rem;
+  font-size: 1.32rem;
+  border-bottom-width: 3px;
+}
+
+.word.phrase .word-group {
+  gap: 0.22rem;
 }
 
 .message {
@@ -306,6 +356,22 @@ h1 {
   .tile {
     width: 2.2rem;
     font-size: 1.7rem;
+  }
+
+  .word.phrase .tile {
+    width: 1.45rem;
+    height: 2.25rem;
+    font-size: 1.15rem;
+  }
+
+  .hint {
+    min-width: 4.6rem;
+    font-size: 1.55rem;
+  }
+
+  .figure {
+    width: 124px;
+    height: 124px;
   }
 
   .key {
