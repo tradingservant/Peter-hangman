@@ -2,7 +2,7 @@
 
 A small static Hangman vocabulary game. Each round hides one of two entries — **kill** or **knock down** — and you guess letters before the drawing is finished. **knock down** keeps the space between the two words. A Chinese hint sits beside the drawing: 殺害 for kill, and 擊倒 for knock down. It is a phone-friendly page with no server, no account, and no API keys. After the first visit it can open offline, and it can be added to an iPhone home screen.
 
-The footer reads **Peter's Hangman (v1.1)**.
+The footer reads **Peter's Hangman (v1.2)**.
 
 ## Play locally
 
@@ -41,4 +41,4 @@ Paths in the page, manifest, and service worker are relative, so the same files 
 - `manifest.webmanifest`, `sw.js`, `icons/` — installable / offline shell
 - `.nojekyll` — publish the folder as plain files
 
-When you ship a change, update the footer text and the `CACHE` name in `sw.js` together so installed copies pick up the new files.
+When you ship a change, update the footer, the `?v=` on `styles.css` and `game.js` in `index.html`, and the `CACHE` name in `sw.js` together. The page, script, and stylesheet are loaded from the network when online, and from the cache when offline.
