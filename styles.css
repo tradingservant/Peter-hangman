@@ -177,6 +177,7 @@ h1 {
   border-bottom: 4px solid var(--ink);
   display: grid;
   place-items: center;
+  text-transform: lowercase;
   font-family: Georgia, "Iowan Old Style", Palatino, serif;
   font-size: 2rem;
   font-weight: 700;
@@ -190,6 +191,11 @@ h1 {
 .tile.missed {
   color: var(--bad);
   border-bottom-color: var(--bad);
+}
+
+.word.long .tile {
+  width: 1.95rem;
+  font-size: 1.5rem;
 }
 
 .word.phrase .tile {
@@ -240,6 +246,7 @@ h1 {
   min-width: 1.15rem;
   margin: 0 0.08rem;
   font-weight: 750;
+  text-transform: lowercase;
 }
 
 .chip.good {
@@ -266,6 +273,7 @@ h1 {
 .key {
   width: calc((100% - 6 * 0.35rem) / 7);
   min-height: 48px;
+  text-transform: lowercase;
   padding: 0;
   border: 1px solid var(--key-edge);
   border-radius: 12px;

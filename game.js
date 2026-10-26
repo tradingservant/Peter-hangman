@@ -4,6 +4,10 @@
   var ROUNDS = [
     { word: "kill", hint: "殺害" },
     { word: "knock down", hint: "擊倒" },
+    { word: "destroy", hint: "摧毀" },
+    { word: "damage", hint: "損壞" },
+    { word: "bring", hint: "帶來" },
+    { word: "wash away", hint: "沖走" },
   ];
   var MAX_WRONG = 6;
   var KEY_ROWS = ["abcdefg", "hijklmn", "opqrstu", "vwxyz"];
@@ -85,10 +89,10 @@
   }
 
   function messageText() {
-    if (phase === "won") return "You got it. The word is " + secret.toUpperCase() + ".";
-    if (phase === "lost") return "Out of guesses. The word was " + secret.toUpperCase() + ".";
+    if (phase === "won") return "You got it. The word is " + secret + ".";
+    if (phase === "lost") return "Out of guesses. The word was " + secret + ".";
     if (!lastGuess) return letterCount() + " letters. Guess a letter.";
-    var shown = lastGuess.toUpperCase();
+    var shown = lastGuess;
     if (secret.indexOf(lastGuess) !== -1) return shown + " is in the word.";
     return shown + " is not in the word.";
   }
@@ -99,6 +103,7 @@
     group.className = "word-group";
     wordEl.textContent = "";
     wordEl.classList.toggle("phrase", secret.indexOf(" ") !== -1);
+    wordEl.classList.toggle("long", secret.indexOf(" ") === -1 && letterCount() >= 7);
 
     function flushGroup() {
       if (!group.childNodes.length) return;
@@ -121,9 +126,9 @@
       var tile = document.createElement("span");
       tile.className = "tile";
       if (guessed[ch] || phase === "lost") {
-        tile.textContent = ch.toUpperCase();
+        tile.textContent = ch;
         if (phase === "lost" && !guessed[ch]) tile.classList.add("missed");
-        spoken.push(ch.toUpperCase());
+        spoken.push(ch);
       } else {
         tile.classList.add("blank");
         spoken.push("blank");
@@ -145,7 +150,7 @@
       var letter = guessOrder[i];
       var chip = document.createElement("span");
       chip.className = "chip " + (secret.indexOf(letter) === -1 ? "bad" : "good");
-      chip.textContent = letter.toUpperCase();
+      chip.textContent = letter;
       guessedEl.appendChild(chip);
     }
   }
@@ -192,8 +197,8 @@
         button.type = "button";
         button.className = "key";
         button.dataset.letter = letter;
-        button.textContent = letter.toUpperCase();
-        button.setAttribute("aria-label", letter.toUpperCase());
+        button.textContent = letter;
+        button.setAttribute("aria-label", letter);
         button.addEventListener("click", function (event) {
           guess(event.currentTarget.dataset.letter);
         });
