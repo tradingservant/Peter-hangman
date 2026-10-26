@@ -2,15 +2,15 @@
    Bump CACHE and the ?v= links in index.html together with the footer.
    Navigations, index.html, game.js, and styles.css use the network when
    online so a stale cache cannot keep an old script after a deploy. */
-const CACHE = "peters-hangman-v1.2";
+const CACHE = "peters-hangman-v1.3";
 
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
-  "./styles.css?v=1.2",
+  "./styles.css?v=1.3",
   "./game.js",
-  "./game.js?v=1.2",
+  "./game.js?v=1.3",
   "./manifest.webmanifest",
   "./icons/favicon.svg",
   "./icons/icon-192.png",
