@@ -30,17 +30,20 @@
       </header>
 
       <section class="stage" id="stage" aria-label="Hangman">
-        <svg class="figure" viewBox="0 0 160 180" aria-hidden="true">
-          <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 168 H92 M40 168 V18 H118 M118 18 V40" />
-            <circle class="part" data-part="1" cx="118" cy="58" r="16" />
-            <path class="part" data-part="2" d="M118 74 V116" />
-            <path class="part" data-part="3" d="M118 90 L92 108" />
-            <path class="part" data-part="4" d="M118 90 L144 108" />
-            <path class="part" data-part="5" d="M118 116 L96 148" />
-            <path class="part" data-part="6" d="M118 116 L140 148" />
-          </g>
-        </svg>
+        <div class="stage-row">
+          <svg class="figure" viewBox="0 0 160 180" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 168 H92 M40 168 V18 H118 M118 18 V40" />
+              <circle class="part" data-part="1" cx="118" cy="58" r="16" />
+              <path class="part" data-part="2" d="M118 74 V116" />
+              <path class="part" data-part="3" d="M118 90 L92 108" />
+              <path class="part" data-part="4" d="M118 90 L144 108" />
+              <path class="part" data-part="5" d="M118 116 L96 148" />
+              <path class="part" data-part="6" d="M118 116 L140 148" />
+            </g>
+          </svg>
+          <p id="hint" class="hint" lang="zh-Hant"></p>
+        </div>
         <p id="wrong-count" class="wrong-count">Wrong guesses: 0 / 6</p>
       </section>
 
@@ -52,7 +55,7 @@
 
       <button id="next-round" class="next-round" type="button">New round</button>
 
-      <footer class="footer">Peter's Hangman (v1.0)</footer>
+      <footer class="footer">Peter's Hangman (v1.1)</footer>
     </main>
     <noscript>
       <p class="noscript">Peter's Hangman needs JavaScript. It still runs entirely in your browser.</p>

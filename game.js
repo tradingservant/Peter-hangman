@@ -1,11 +1,15 @@
 (function () {
   "use strict";
 
-  var WORDS = ["kill", "knock", "down"];
+  var ROUNDS = [
+    { word: "kill", hint: "殺害" },
+    { word: "knock down", hint: "擊倒" },
+  ];
   var MAX_WRONG = 6;
   var KEY_ROWS = ["abcdefg", "hijklmn", "opqrstu", "vwxyz"];
 
   var secret = "";
+  var hint = "";
   var previousWord = "";
   var guessed = Object.create(null);
   var guessOrder = [];
@@ -14,6 +18,7 @@
   var lastGuess = "";
 
   var stageEl = document.getElementById("stage");
+  var hintEl = document.getElementById("hint");
   var wordEl = document.getElementById("word");
   var messageEl = document.getElementById("message");
   var guessedEl = document.getElementById("guessed");
@@ -23,24 +28,36 @@
   var parts = Array.prototype.slice.call(document.querySelectorAll("[data-part]"));
   var keys = Object.create(null);
 
-  function pickWord(previous) {
+  function pickRound(previous) {
     var pool = [];
-    for (var i = 0; i < WORDS.length; i += 1) {
-      if (WORDS[i] !== previous) pool.push(WORDS[i]);
+    for (var i = 0; i < ROUNDS.length; i += 1) {
+      if (ROUNDS[i].word !== previous) pool.push(ROUNDS[i]);
     }
-    var choices = pool.length ? pool : WORDS.slice();
+    var choices = pool.length ? pool : ROUNDS.slice();
     return choices[Math.floor(Math.random() * choices.length)];
+  }
+
+  function letterCount() {
+    var count = 0;
+    for (var i = 0; i < secret.length; i += 1) {
+      if (secret.charAt(i) !== " ") count += 1;
+    }
+    return count;
   }
 
   function wordIsRevealed() {
     for (var i = 0; i < secret.length; i += 1) {
-      if (!guessed[secret.charAt(i)]) return false;
+      var ch = secret.charAt(i);
+      if (ch === " ") continue;
+      if (!guessed[ch]) return false;
     }
     return true;
   }
 
   function startRound() {
-    secret = pickWord(previousWord);
+    var round = pickRound(previousWord);
+    secret = round.word;
+    hint = round.hint;
     previousWord = secret;
     guessed = Object.create(null);
     guessOrder = [];
@@ -70,7 +87,7 @@
   function messageText() {
     if (phase === "won") return "You got it. The word is " + secret.toUpperCase() + ".";
     if (phase === "lost") return "Out of guesses. The word was " + secret.toUpperCase() + ".";
-    if (!lastGuess) return secret.length + " letters. Guess a letter.";
+    if (!lastGuess) return letterCount() + " letters. Guess a letter.";
     var shown = lastGuess.toUpperCase();
     if (secret.indexOf(lastGuess) !== -1) return shown + " is in the word.";
     return shown + " is not in the word.";
@@ -78,9 +95,29 @@
 
   function renderWord() {
     var spoken = [];
+    var group = document.createElement("span");
+    group.className = "word-group";
     wordEl.textContent = "";
+    wordEl.classList.toggle("phrase", secret.indexOf(" ") !== -1);
+
+    function flushGroup() {
+      if (!group.childNodes.length) return;
+      wordEl.appendChild(group);
+      group = document.createElement("span");
+      group.className = "word-group";
+    }
+
     for (var i = 0; i < secret.length; i += 1) {
       var ch = secret.charAt(i);
+      if (ch === " ") {
+        flushGroup();
+        var gap = document.createElement("span");
+        gap.className = "word-gap";
+        gap.setAttribute("aria-hidden", "true");
+        wordEl.appendChild(gap);
+        spoken.push("space");
+        continue;
+      }
       var tile = document.createElement("span");
       tile.className = "tile";
       if (guessed[ch] || phase === "lost") {
@@ -91,8 +128,9 @@
         tile.classList.add("blank");
         spoken.push("blank");
       }
-      wordEl.appendChild(tile);
+      group.appendChild(tile);
     }
+    flushGroup();
     wordEl.setAttribute("aria-label", "Word: " + spoken.join(", "));
   }
 
@@ -128,6 +166,8 @@
     renderWord();
     renderGuessed();
     renderKeyboard();
+    hintEl.textContent = hint;
+    hintEl.setAttribute("aria-label", "Hint: " + hint);
     wrongEl.textContent = "Wrong guesses: " + wrong + " / " + MAX_WRONG;
     messageEl.textContent = messageText();
     messageEl.classList.toggle("win", phase === "won");
